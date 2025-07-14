@@ -240,11 +240,21 @@ function App() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <BlurToFocusText id="main-logo" className="main-logo-container">
+        <motion.div
+          className="main-logo-container"
+          initial={{ filter: 'blur(10px)', opacity: 0 }}
+          animate={{ filter: 'blur(0px)', opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
           <h1 className="main-logo">21</h1>
-        </BlurToFocusText>
+        </motion.div>
 
-        <div className="buttons-grid">
+        <motion.div
+          className="buttons-grid"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
           {[
             { key: 'rental', label: 'Аренда студии', icon: '🏠' },
             { key: 'packages', label: 'Пакеты на аренду', icon: '📦', subtitle: 'на 60% выгодно' },
@@ -252,28 +262,31 @@ function App() {
             { key: 'portfolio', label: 'Портфолио', icon: '🎨' },
             { key: 'rules', label: 'Правила', icon: '📋' }
           ].map((button, index) => (
-            <BlurToFocusText 
-              key={button.key} 
-              id={`button-${button.key}`}
-              delay={index * 0.1}
+            <motion.button
+              key={button.key}
+              className="glass-button"
+              initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
+              animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 + index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setActiveModal(button.key)}
             >
-              <motion.button
-                className="glass-button"
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveModal(button.key)}
-              >
-                <span className="button-icon">{button.icon}</span>
-                <span className="button-label">{button.label}</span>
-                {button.subtitle && (
-                  <span className="button-subtitle">{button.subtitle}</span>
-                )}
-              </motion.button>
-            </BlurToFocusText>
+              <span className="button-icon">{button.icon}</span>
+              <span className="button-label">{button.label}</span>
+              {button.subtitle && (
+                <span className="button-subtitle">{button.subtitle}</span>
+              )}
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        <BlurToFocusText id="contact-info" className="contact-info" delay={0.6}>
+        <motion.div
+          className="contact-info"
+          initial={{ filter: 'blur(10px)', opacity: 0 }}
+          animate={{ filter: 'blur(0px)', opacity: 1 }}
+          transition={{ duration: 1, delay: 1.8 }}
+        >
           <div className="contact-item">
             <span className="contact-icon">📞</span>
             <span>+998 (90) 333-33-66</span>
@@ -286,7 +299,7 @@ function App() {
             <span className="contact-icon">📱</span>
             <span>@21vstudio</span>
           </div>
-        </BlurToFocusText>
+        </motion.div>
       </motion.div>
 
       <AnimatePresence>
