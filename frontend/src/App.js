@@ -1,66 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [activeModal, setActiveModal] = useState(null);
-  const [visibleElements, setVisibleElements] = useState(new Set());
-  const observerRef = useRef(null);
 
   useEffect(() => {
     // Загрузочный экран
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    // Intersection Observer для blur-to-focus эффекта
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleElements(prev => new Set([...prev, entry.target.id]));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
-
-  const BlurToFocusText = ({ children, id, className = "", delay = 0 }) => {
-    const ref = useRef(null);
-    
-    useEffect(() => {
-      if (ref.current && observerRef.current) {
-        observerRef.current.observe(ref.current);
-      }
-    }, []);
-
-    const isVisible = visibleElements.has(id);
-
-    return (
-      <motion.div
-        ref={ref}
-        id={id}
-        className={`blur-to-focus ${isVisible ? 'focused' : ''} ${className}`}
-        initial={{ filter: 'blur(10px)', opacity: 0 }}
-        animate={isVisible ? { filter: 'blur(0px)', opacity: 1 } : {}}
-        transition={{ duration: 1, delay }}
-      >
-        {children}
-      </motion.div>
-    );
-  };
 
   const FloatingMolecules = () => {
     const molecules = Array.from({ length: 20 }, (_, i) => (
